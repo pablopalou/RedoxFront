@@ -18,24 +18,16 @@ const PatientDetailPage = () => {
     // let idPatient = router.query.id as string;
     const [patient, setPatient] = useState();
     const [patientDetails, setPatientDetails] = useState();
-    // const [allergies, setAllergies] = useState([]);
-    // const [encounters, setEncounters] = useState([]);
-    // const [inmunization, setInmunization] = useState([]);
-    // const [medications, setMedications] = useState([]);
-    // const [planOfCare, setPlanOfCare] = useState([]);
-    // const [problems, setProblems] = useState([]);
-    // const [procedures, setProcedures] = useState([]);
-    // const [result, setResult] = useState([]);
-    // const [vitalSigns, setVitalSigns] = useState([]);
+    const [noData, setNoData] = useState(false);
 
-    // this call to the api is normal to timeout so maybe we can set error and do the useeffect again if it was an error. 
     useEffect(() => {
         if (id){
             instance.get(`/patientDetail/${id}`).then(
                 (response: any) => {
-                    // console.log("Submission:", response.data.data);
                     console.log(response.data);
                     setPatientDetails(response.data);
+                    // console.log(response.data.Meta.Errors.length);
+                    setNoData(response.data.Meta.Errors.length > 0 ? true : false);
                 }
             ).catch(
                 (error) => {
@@ -48,19 +40,9 @@ const PatientDetailPage = () => {
                     setPatient(response.data.data);
                 }
             )
-        } else {
-            console.log("renderizar otra vez");
         }
     }, [id])
 
-
-    const propertyGender = (gender: string | undefined) => {
-        if (gender) {
-            return gender.charAt(0).toUpperCase() + gender.slice(1);
-        }
-        return "";
-    }
-    //poner que si no tiene documentos, solo devuelva la info personal y chau.
     return (
         <div className='flex flex-col items-center pt-10'>
             <div className='w-11/12'>
@@ -88,7 +70,13 @@ const PatientDetailPage = () => {
                     </div>
                 </div>
             </div>
-            <div className='pt-4 flex flex-col w-11/12 min-w-11/12'>
+            {noData ? 
+            (<div>
+                <p className='text-bold text-xl pt-8 text-blue'> This patient does not have any documents. </p>
+            </div>) :
+            
+            (
+            <><div className='pt-4 flex flex-col w-11/12 min-w-11/12'>
                 <p className='text-bold text-xl'> Allergies </p>
                 <div className="mt-3 flex flex-col">
                     <div className="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -334,7 +322,7 @@ const PatientDetailPage = () => {
                     <div className="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
                     <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
                         <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
-                        {patientDetails?.Results?.Producer?.Observations && patientDetails?.Results?.Producer?.Observations.length > 0 ? (
+                        {patientDetails?.Results?.[0]?.Observations && patientDetails?.Results?.[0]?.Observations.length > 0 ? (
                         <table className="min-w-full divide-y divide-gray-300">
                             <thead className="bg-gray-50">
                             <tr>
@@ -353,7 +341,7 @@ const PatientDetailPage = () => {
                             </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-200 bg-white">
-                            {patientDetails?.Results?.Producer?.Observations.map((result)=>
+                            {patientDetails?.Results?.[0].Observations.map((result)=>
                                 <tr key={result}>
                                     <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{result.DateTime}</td>
                                     <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{}</td>
@@ -411,7 +399,8 @@ const PatientDetailPage = () => {
                     </div>
                     </div>
                 </div>
-            </div>
+            </div></>)
+            }
         </div>
     )
 }

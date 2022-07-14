@@ -11,7 +11,7 @@ const PatientDetailPage = () => {
             'Content-Type': 'application/json',
         }
     });
-    // see if procedures is ok. 
+    // put loading sign
     const router = useRouter();
     const { query = {} } = router || {};
     const { id = 0 } = query || {};
@@ -254,7 +254,7 @@ const PatientDetailPage = () => {
                     <div className="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
                     <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
                         <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
-                        {patientDetails?.Procedures.Procedures && patientDetails?.Procedures.Procedures.length > 0 ? (
+                        {patientDetails?.Procedures?.Procedures && patientDetails?.Procedures?.Procedures?.length > 0 ? (
                         <table className="min-w-full divide-y divide-gray-300">
                             <thead className="bg-gray-50">
                             <tr>
@@ -374,7 +374,7 @@ const PatientDetailPage = () => {
                     <div className="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
                     <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
                         <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
-                        {patientDetails?.VitalSigns[0].Observations && patientDetails?.VitalSigns[0].Observations.length > 0 ? (
+                        {patientDetails?.VitalSigns?.[0].Observations && patientDetails?.VitalSigns?.[0].Observations.length > 0 ? (
                         <table className="min-w-full divide-y divide-gray-300">
                             <thead className="bg-gray-50">
                             <tr>
@@ -413,90 +413,6 @@ const PatientDetailPage = () => {
                 </div>
             </div>
         </div>
-        // <Layout>
-        //     <div className='w-full flex justify-center pb-10'>
-        //         <div className='w-11/12 flex flex-col mt-10'>
-        //             <Link href={routes.home} passHref><a className="text-blue-500 hover:text-blue-800 mb-8"> <img src="../icons/backarrow.svg" alt="" /></a></Link>
-        //             {/* div for id, status and doctor*/}
-        //             <div className='flex flex-col mb-4 border-b-2 pb-4'>
-        //                 <div className='flex items-center mb-2'>
-        //                     <h4 className='pr-4 mb-0 w-1/5'>{`Submission: ${submission?.id}`}</h4>
-        //                     <div className='w-1/6'>{<AnyTag status={submission?.state}></AnyTag>}</div>
-        //                     {submission?.patient.id == id &&
-        //                         <div className='flex w-full justify-end'>
-        //                             <Popup className="" trigger={<button className='w-32 h-8 rounded-xl bg-red-100 text-red-800'>Delete</button>}
-        //                                 position="left center">
-        //                                 <div className="flex flex-col items-center">
-        //                                     <h5>Are you sure you want to delete this submission? </h5>
-        //                                     <p>If you want to cancel, click outside the pop up</p>
-        //                                     <button className='w-32 h-8 rounded-xl bg-red-100 text-red-800' onClick={handleDelete}>Yes, delete</button>
-        //                                 </div>
-        //                             </Popup>
-        //                         </div>
-        //                     }
-        //                     {submission?.doctor?.id == id &&
-        //                         <div className='flex w-full justify-end'>
-        //                             <input title="a" placeholder="" type="file" onChange={onFileChange} />
-        //                             <button className='w-48 h-8 rounded-xl bg-gray-100 text-gray-800' onClick={uploadPrescription}>Upload Prescription</button>
-        //                         </div>
-        //                     }
-        //                 </div>
-        //                 {submission?.doctor ? <div>Assigned doctor: {submission?.doctor?.name}. Grade: {submission.doctor.doctorInformation.grade}. Speciality: {submission.doctor.doctorInformation.speciality}</div> : <div>A doctor will take this submission soon</div>}
-        //             </div>
-
-        //             {/* patient info */}
-        //             <div className='flex flex-col mb-4'>
-        //                 <h5> Patient Information:</h5>
-        //                 <ShowInformation title1="Email" title2='Name' property1={submission?.patient.email} property2={submission?.patient.name}></ShowInformation>
-        //                 <ShowInformation title1="Birth" title2='Gender' property1={submission?.patient.patientInformation.birth} property2={propertyGender(submission?.patient.patientInformation.gender)}></ShowInformation>
-        //                 <ShowInformation title1="Height" title2='Weight' property1={submission?.patient.patientInformation.height} property2={submission?.patient.patientInformation.weight}></ShowInformation>
-
-        //                 <div className=' mb-3'>
-        //                     <p> Diseases </p>
-        //                     <div>{submission?.patient.patientInformation.diseases}</div>
-        //                 </div>
-        //                 <div>
-        //                     <p> Previous treatments </p>
-        //                     <div>{submission?.patient.patientInformation.previous_treatments}</div>
-        //                 </div>
-        //             </div>
-
-        //             {/* symptoms */}
-        //             <div className='flex flex-col mb-4'>
-        //                 <h5 className='mb-0'> Symptoms </h5>
-        //                 <div className='flex'>
-        //                     <p className='mr-4'> {submission?.symptoms}</p>
-        //                     {submission?.state == "pending" && submission?.patient.id == id &&
-        //                         <button className='w-40 rounded-xl bg-blue-100 text-blue-800' onClick={handleEdit}>Edit symptoms</button>
-        //                     }
-        //                 </div>
-        //             </div>
-        //             {/* prescriptions */}
-        //             <div className='flex flex-col w-full'>
-        //                 <h5 className='mb-0'> Prescriptions </h5>
-        //                 {submission?.prescriptions ?
-        //                     (<div className='bg-gray-200 py-3 flex pl-4'>
-        //                         <a onClick={() => {handleDownload(submission?.prescriptions)}} className="pr-10 text-blue-500 hover:text-blue-800"> Download your prescription</a>
-        //                         {submission?.doctor?.id == id &&
-        //                             <Popup className="" trigger={<button className='w-24 h-6 rounded-xl bg-red-100 text-red-800'>Delete</button>}
-        //                                 position="left center">
-        //                                 <div className="flex flex-col items-center">
-        //                                     <h5>Are you sure you want to delete this prescription? </h5>
-        //                                     <p>If you want to cancel, click outside the pop up</p>
-        //                                     <button className='w-32 h-8 rounded-xl bg-red-100 text-red-800' onClick={handleDeletePrescription}>Yes, delete</button>
-        //                                 </div>
-        //                             </Popup>
-        //                         }
-        //                     </div>) :
-        //                     (<div className='bg-gray-200 py-3 flex pl-4 '>
-        //                         <img src="../icons/notavailable.svg" alt="" />
-        //                         <p className='text-lg pl-3'>No prescriptions have been added yet</p>
-        //                     </div>)
-        //                 }
-        //             </div>
-        //         </div>
-        //     </div>
-        // </Layout>
     )
 }
 

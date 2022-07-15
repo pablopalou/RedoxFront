@@ -6,6 +6,7 @@ import { useEffect } from 'react';
 import axios from 'axios'
 import { useState } from "react";
 import Link from 'next/link';
+import {useRouter} from 'next/router'
 
 export const instance = axios.create({
   baseURL: 'http://localhost/api',
@@ -18,6 +19,7 @@ export const instance = axios.create({
 const Home: NextPage = () => {
   const [patients, setPatients] = useState([]);
   // traer los pacientes pero solo los mostrar los primeros 4 datos.
+  const router = useRouter();
 
   useEffect(() => {
     console.log('entre');
@@ -31,6 +33,9 @@ const Home: NextPage = () => {
     });
   }, [])
 
+  const addPatient = () => {
+    router.push('/patient/new');
+  }
 
   return (
     <div className={styles.container}>
@@ -49,6 +54,7 @@ const Home: NextPage = () => {
             <button
               type="button"
               className="relative inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              onClick={addPatient}
             >
               Add new patient
             </button>

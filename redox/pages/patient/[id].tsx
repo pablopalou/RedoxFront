@@ -110,7 +110,7 @@ const PatientDetailPage = () => {
                                 </tr>
                             )}
                             </tbody>
-                        </table>): <p>{patientDetails?.AllergyText}</p> }
+                        </table>): <p className='text-center'>{patientDetails?.AllergyText}</p> }
                         </div>
                     </div>
                     </div>
@@ -150,7 +150,7 @@ const PatientDetailPage = () => {
                                 </tr>
                             )}
                             </tbody>
-                        </table>): <p>{patientDetails?.EncountersText}</p> }
+                        </table>): <p className='text-center'>{patientDetails?.EncountersText}</p> }
                         </div>
                     </div>
                     </div>
@@ -190,7 +190,7 @@ const PatientDetailPage = () => {
                                 </tr>
                             )}
                             </tbody>
-                        </table>): <p>{patientDetails?.ImmunizationsText}</p> }
+                        </table>): <p className='text-center'>{patientDetails?.ImmunizationsText}</p> }
                         </div>
                     </div>
                     </div>
@@ -230,7 +230,7 @@ const PatientDetailPage = () => {
                                 </tr>
                             )}
                             </tbody>
-                        </table>): <p>{patientDetails?.MedicationsText}</p> }
+                        </table>): <p className='text-center'>{patientDetails?.MedicationsText}</p> }
                         </div>
                     </div>
                     </div>
@@ -270,7 +270,7 @@ const PatientDetailPage = () => {
                                 </tr>
                             )}
                             </tbody>
-                        </table>): <p>{patientDetails?.ProceduresText}</p> }
+                        </table>): <p className='text-center'>{patientDetails?.ProceduresText}</p> }
                         </div>
                     </div>
                     </div>
@@ -310,7 +310,7 @@ const PatientDetailPage = () => {
                                 </tr>
                             )}
                             </tbody>
-                        </table>): <p>{patientDetails?.ProblemsText}</p> }
+                        </table>): <p className='text-center'>{patientDetails?.ProblemsText}</p> }
                         </div>
                     </div>
                     </div>
@@ -350,7 +350,7 @@ const PatientDetailPage = () => {
                                 </tr>
                             )}
                             </tbody>
-                        </table>): <p>{patientDetails?.ResultText}</p> }
+                        </table>): <p className='text-center'>{patientDetails?.ResultText}</p> }
                         </div>
                     </div>
                     </div>
@@ -394,7 +394,7 @@ const PatientDetailPage = () => {
                                 </tr>
                             )}
                             </tbody>
-                        </table>): <p>{patientDetails?.VitalSignsText}</p> }
+                        </table>): <p className='text-center'>{patientDetails?.VitalSignsText}</p> }
                         </div>
                     </div>
                     </div>

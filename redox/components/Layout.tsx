@@ -75,7 +75,7 @@ export const Layout = () => {
                                                 <img className="h-8 w-8 rounded-full" src={user.imageUrl} alt="" />
                                             </Menu.Button>
                                         </div>
-                                        <Transition
+                                        {/* <Transition
                                             as={Fragment}
                                             enter="transition ease-out duration-100"
                                             enterFrom="transform opacity-0 scale-95"
@@ -101,7 +101,7 @@ export const Layout = () => {
                                                     </Menu.Item>
                                                 ))}
                                             </Menu.Items>
-                                        </Transition>
+                                        </Transition> */}
                                     </Menu>
                                 </div>
                             </div>

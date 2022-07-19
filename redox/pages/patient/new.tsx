@@ -2,6 +2,7 @@ import axios from "axios";
 import { NextPage } from "next"
 import { useRouter } from "next/router";
 import { useState } from "react";
+import { Layout } from "../../components/Layout";
 
 const NewPatientPage: NextPage = () => {
     const instance = axios.create({
@@ -41,6 +42,7 @@ const NewPatientPage: NextPage = () => {
 
     return (
         <div className="w-full items-center flex flex-col">
+            <Layout></Layout>
             <div className="w-11/12 flex flex-col pt-4">
                 <h3 className="text-bold text-2xl pb-3"> Create patient </h3>
                 <p className="pb-10"> You must provide basic information to create a new patient</p>

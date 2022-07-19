@@ -4,6 +4,7 @@ import { useRouter } from "next/router"
 import axios from 'axios'
 import { Layout } from '../../components/Layout';
 import { Loading } from '@nextui-org/react';
+import { ToastContainer, toast } from 'react-toastify';
 
 const PatientDetailPage = () => {
     const instance = axios.create({
@@ -22,21 +23,27 @@ const PatientDetailPage = () => {
     const [patientDetails, setPatientDetails] = useState();
     const [noData, setNoData] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [redoxError, setRedoxError] = useState(false);
+    const notify = () => toast("Redox Test Environment produced an error, please refresh.");
 
     useEffect(() => {
         if (id){
             setLoading(true);
             instance.get(`/patientDetail/${id}`).then(
                 (response: any) => {
+                    setRedoxError(false);
                     console.log(response.data);
                     setPatientDetails(response.data);
                     // console.log(response.data.Meta.Errors.length);
-                    setNoData(response.data.Meta.Errors.length > 0 ? true : false);
+                    setNoData(response.data.Meta?.Errors?.length > 0 ? true : false);
                     setLoading(false);
                 }
             ).catch(
                 (error) => {
                     console.log(error);
+                    console.log("aaaa");
+                    setRedoxError(true);
+                    notify();
                     setLoading(false);
                 }
             )
@@ -75,10 +82,6 @@ const PatientDetailPage = () => {
                         <p> Gender </p>
                         <p> {patient?.gender} </p>
                     </div>
-                    {/* <div className='flex flex-col'>
-                        <p> Email </p>
-                        <p> {patient?.email} </p>
-                    </div> */}
                 </div>
             </div>
             {noData ? 
@@ -87,7 +90,8 @@ const PatientDetailPage = () => {
             </div>) :
             
             ( loading ? <div className='p-4'><Loading></Loading></div> :
-            <><div className='pt-4 flex flex-col w-11/12 min-w-11/12'>
+            <>
+            <div className='pt-4 flex flex-col w-11/12 min-w-11/12'>
                 <p className='text-bold text-xl'> Allergies </p>
                 <div className="mt-3 flex flex-col">
                     <div className="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -112,8 +116,8 @@ const PatientDetailPage = () => {
                             </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-200 bg-white">
-                            {patientDetails?.Allergies.map((encounter)=>
-                                <tr key={encounter}>
+                            {patientDetails?.Allergies.map((encounter,index)=>
+                                <tr key={index}>
                                     <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{encounter.DateTime}</td>
                                     <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{encounter.EndDateTime}</td>
                                     <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{encounter.Type.Name}</td>
@@ -152,8 +156,8 @@ const PatientDetailPage = () => {
                             </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-200 bg-white">
-                            {patientDetails?.Encounters.map((encounter)=>
-                                <tr key={encounter}>
+                            {patientDetails?.Encounters.map((encounter, index)=>
+                                <tr key={index}>
                                     <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{encounter.DateTime}</td>
                                     <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{encounter.EndDateTime}</td>
                                     <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{encounter.Type.Name}</td>
@@ -192,8 +196,8 @@ const PatientDetailPage = () => {
                             </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-200 bg-white">
-                            {patientDetails?.Immunizations.map((immunization)=>
-                                <tr key={immunization}>
+                            {patientDetails?.Immunizations.map((immunization, index)=>
+                                <tr key={index}>
                                     <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{immunization.DateTime}</td>
                                     <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{}</td>
                                     <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{immunization.Product.Name}</td>
@@ -232,8 +236,8 @@ const PatientDetailPage = () => {
                             </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-200 bg-white">
-                            {patientDetails?.Medications.map((medication)=>
-                                <tr key={medication}>
+                            {patientDetails?.Medications.map((medication, index)=>
+                                <tr key={index}>
                                     <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{medication.StartDate}</td>
                                     <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{medication.EndDate}</td>
                                     <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{medication.Product.Name}</td>
@@ -272,8 +276,8 @@ const PatientDetailPage = () => {
                             </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-200 bg-white">
-                            {patientDetails?.Procedures.Procedures.map((procedure)=>
-                                <tr key={procedure}>
+                            {patientDetails?.Procedures.Procedures.map((procedure, index)=>
+                                <tr key={index}>
                                     <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{procedure.DateTime}</td>
                                     <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{procedure.EndDateTime}</td>
                                     <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{procedure.Type.Name}</td>
@@ -312,8 +316,8 @@ const PatientDetailPage = () => {
                             </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-200 bg-white">
-                            {patientDetails?.Problems.map((problem)=>
-                                <tr key={problem}>
+                            {patientDetails?.Problems.map((problem, index)=>
+                                <tr key={index}>
                                     <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{problem.StartDate}</td>
                                     <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{problem.EndDate}</td>
                                     <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{problem.Name}</td>
@@ -352,8 +356,8 @@ const PatientDetailPage = () => {
                             </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-200 bg-white">
-                            {patientDetails?.Results?.[0].Observations.map((result)=>
-                                <tr key={result}>
+                            {patientDetails?.Results?.[0].Observations.map((result, index)=>
+                                <tr key={index}>
                                     <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{result.DateTime}</td>
                                     <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{}</td>
                                     <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{result.Name}</td>
@@ -395,8 +399,8 @@ const PatientDetailPage = () => {
                             </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-200 bg-white">
-                            {patientDetails?.VitalSigns[0].Observations.map((vitalSign)=>
-                                <tr key={vitalSign}>
+                            {patientDetails?.VitalSigns[0].Observations.map((vitalSign, index)=>
+                                <tr key={index}>
                                     <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{patientDetails?.VitalSigns[0].DateTime}</td>
                                     <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{}</td>
                                     <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{vitalSign.Name}</td>

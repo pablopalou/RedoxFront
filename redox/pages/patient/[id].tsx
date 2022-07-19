@@ -2,6 +2,8 @@
 import { useContext, useEffect, useState } from 'react'
 import { useRouter } from "next/router"
 import axios from 'axios'
+import { Layout } from '../../components/Layout';
+import { Loading } from '@nextui-org/react';
 
 const PatientDetailPage = () => {
     const instance = axios.create({
@@ -19,19 +21,23 @@ const PatientDetailPage = () => {
     const [patient, setPatient] = useState();
     const [patientDetails, setPatientDetails] = useState();
     const [noData, setNoData] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         if (id){
+            setLoading(true);
             instance.get(`/patientDetail/${id}`).then(
                 (response: any) => {
                     console.log(response.data);
                     setPatientDetails(response.data);
                     // console.log(response.data.Meta.Errors.length);
                     setNoData(response.data.Meta.Errors.length > 0 ? true : false);
+                    setLoading(false);
                 }
             ).catch(
                 (error) => {
                     console.log(error);
+                    setLoading(false);
                 }
             )
             instance.get(`patient/${id}`).then(
@@ -39,13 +45,18 @@ const PatientDetailPage = () => {
                     console.log(response.data.data);
                     setPatient(response.data.data);
                 }
+            ).catch(
+                (error) => {
+                    console.log(error);
+                }
             )
         }
     }, [id])
 
     return (
-        <div className='flex flex-col items-center pt-10'>
-            <div className='w-11/12'>
+        <div className='flex flex-col items-center'>
+            <Layout></Layout>
+            <div className='w-11/12 pt-4'>
                 <h3 className='underline text-bold'>Personal information</h3>
                 <div className='flex place-content-between pt-6'>
                     <div className='flex flex-col'>
@@ -64,10 +75,10 @@ const PatientDetailPage = () => {
                         <p> Gender </p>
                         <p> {patient?.gender} </p>
                     </div>
-                    <div className='flex flex-col'>
+                    {/* <div className='flex flex-col'>
                         <p> Email </p>
                         <p> {patient?.email} </p>
-                    </div>
+                    </div> */}
                 </div>
             </div>
             {noData ? 
@@ -75,7 +86,7 @@ const PatientDetailPage = () => {
                 <p className='text-bold text-xl pt-8 text-blue'> This patient does not have any documents. </p>
             </div>) :
             
-            (
+            ( loading ? <div className='p-4'><Loading></Loading></div> :
             <><div className='pt-4 flex flex-col w-11/12 min-w-11/12'>
                 <p className='text-bold text-xl'> Allergies </p>
                 <div className="mt-3 flex flex-col">

@@ -25,6 +25,39 @@ const PatientDetailPage = () => {
     const [loading, setLoading] = useState(false);
     const [redoxError, setRedoxError] = useState(false);
     const notify = () => toast("Redox Test Environment produced an error, please refresh.");
+    // retry llamar al instance y despues lo mismo
+
+    const reTry = () => {
+        if (id){
+            setLoading(true);
+            instance.get(`/patientDetail/${id}`).then(
+                (response: any) => {
+                    setRedoxError(false);
+                    console.log(response.data);
+                    setPatientDetails(response.data);
+                    setNoData(response.data.Meta?.Errors?.length > 0 ? true : false);
+                    setLoading(false);
+                }
+            ).catch(
+                (error) => {
+                    console.log(error);
+                    setRedoxError(true);
+                    notify();
+                    setLoading(false);
+                }
+            )
+            instance.get(`patient/${id}`).then(
+                (response) => {
+                    console.log(response.data.data);
+                    setPatient(response.data.data);
+                }
+            ).catch(
+                (error) => {
+                    console.log(error);
+                }
+            )
+        }
+    }
 
     useEffect(() => {
         if (id){
@@ -34,17 +67,16 @@ const PatientDetailPage = () => {
                     setRedoxError(false);
                     console.log(response.data);
                     setPatientDetails(response.data);
-                    // console.log(response.data.Meta.Errors.length);
                     setNoData(response.data.Meta?.Errors?.length > 0 ? true : false);
                     setLoading(false);
                 }
             ).catch(
                 (error) => {
                     console.log(error);
-                    console.log("aaaa");
-                    setRedoxError(true);
-                    notify();
-                    setLoading(false);
+                    reTry();
+                    // setRedoxError(true);
+                    // notify();
+                    // setLoading(false);
                 }
             )
             instance.get(`patient/${id}`).then(
